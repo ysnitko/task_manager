@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { ICONS } from '@/app/lib/store';
 
 export default function Modal() {
   return (
@@ -35,55 +36,23 @@ export default function Modal() {
           </div>
           <div className=" w-full flex flex-col gap-2">
             <p className="text-cancel-delete text-sm">Icon</p>
+
             <div className="flex gap-1">
-              <button className="bg-task-to-do rounded-lg p-3">
-                <Image
-                  src="/assets/images/person.svg"
-                  width={20}
-                  height={20}
-                  alt="person"
-                />
-              </button>
-              <button className="bg-task-to-do rounded-lg p-3">
-                <Image
-                  src="/assets/images/books.svg"
-                  width={20}
-                  height={20}
-                  alt="books"
-                />
-              </button>
-              <button className="bg-task-to-do rounded-lg p-3">
-                <Image
-                  src="/assets/images/cup.svg"
-                  width={20}
-                  height={20}
-                  alt="cup"
-                />
-              </button>
-              <button className="bg-task-to-do rounded-lg p-3">
-                <Image
-                  src="/assets/images/laptop.svg"
-                  width={20}
-                  height={20}
-                  alt="laptop"
-                />
-              </button>
-              <button className="bg-task-to-do rounded-lg p-3">
-                <Image
-                  src="/assets/images/think.svg"
-                  width={20}
-                  height={20}
-                  alt="think"
-                />
-              </button>
-              <button className="bg-task-to-do rounded-lg p-3">
-                <Image
-                  src="/assets/images/clock.svg"
-                  width={20}
-                  height={20}
-                  alt="clock"
-                />
-              </button>
+              {ICONS.map((item) => {
+                return (
+                  <button
+                    key={item.id}
+                    className="bg-task-to-do rounded-lg p-3"
+                  >
+                    <Image
+                      src={item.srcImg}
+                      width={20}
+                      height={20}
+                      alt="icon"
+                    />
+                  </button>
+                );
+              })}
             </div>
           </div>
           <div className=" w-full flex flex-col gap-2">
@@ -102,7 +71,6 @@ export default function Modal() {
                       alt="completed"
                     />
                   </div>
-
                   <p>In Progress</p>
                 </div>
                 <input

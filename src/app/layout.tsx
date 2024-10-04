@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Header from '@/components/header/header';
-import Modal from '@/components/modal/modal';
+
 import { Outfit } from 'next/font/google';
 
 import './globals.css';
@@ -23,7 +23,6 @@ export default function RootLayout({
         <div className="flex flex-col items-center w-1/2 max-w-full gap-5">
           <Header />
           {children}
-          <Modal />
         </div>
       </body>
     </html>
