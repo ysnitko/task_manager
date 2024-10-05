@@ -1,5 +1,6 @@
-import React from "react";
-import Image from "next/image";
+import React from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Header() {
   return (
@@ -13,7 +14,9 @@ export default function Header() {
           alt="logo"
         />
 
-        <p className="text-[40px]">My Task Board</p>
+        <Link href="/" className="text-[40px]">
+          My Task Board
+        </Link>
 
         <Image
           src="/assets/images/Edit_duotone.svg"

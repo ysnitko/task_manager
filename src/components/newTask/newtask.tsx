@@ -7,7 +7,8 @@ interface NewTaskProps {
 }
 
 export default function NewTask({ setAddTask }: NewTaskProps) {
-  const showModal = () => {
+  const showModal = (event: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
+    event.preventDefault();
     setAddTask(true);
   };
 
@@ -19,7 +20,7 @@ export default function NewTask({ setAddTask }: NewTaskProps) {
           width={20}
           height={20}
           alt="add task"
-          onClick={showModal}
+          onClick={(e) => showModal(e)}
         />
       </button>
       <p className="text-sm font-bold">Add new task</p>

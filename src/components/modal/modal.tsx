@@ -1,7 +1,28 @@
 import Image from 'next/image';
 import { ICONS } from '@/app/lib/store';
+import { Dispatch, SetStateAction } from 'react';
 
-export default function Modal() {
+interface NewTaskProps {
+  setAddTask: Dispatch<SetStateAction<boolean>>;
+}
+
+export default function Modal({ setAddTask }: NewTaskProps) {
+  const closeModal = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    event.preventDefault();
+    setAddTask(false);
+  };
+
+  const getIconPath = (event: React.MouseEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+    const findPath = ICONS.find((item) => item.id === +event.target);
+    console.log(event.target);
+
+    return findPath?.srcImg;
+  };
+
   return (
     <form className=" border-[1px] w-full max-w-[500px] h-full max-h-[600px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-xl p-4 flex flex-col justify-between ">
       <div className="flex flex-col gap-2">
@@ -41,8 +62,10 @@ export default function Modal() {
               {ICONS.map((item) => {
                 return (
                   <button
+                    id={item.id.toString()}
                     key={item.id}
                     className="bg-task-to-do rounded-lg p-3"
+                    onClick={getIconPath}
                   >
                     <Image
                       src={item.srcImg}
@@ -129,7 +152,10 @@ export default function Modal() {
         </div>
       </div>
       <div className="flex flex-row justify-end gap-2 text-white">
-        <button className="bg-cancel-delete text-xs rounded-xl flex justify-center  items-center gap-2 px-2 py-1">
+        <button
+          className="bg-cancel-delete text-xs rounded-xl flex justify-center  items-center gap-2 px-2 py-1"
+          onClick={(event) => closeModal(event)}
+        >
           <p>Close</p>
           <Image
             src="/assets/images/close_ring_duotone.svg"
