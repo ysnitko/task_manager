@@ -1,5 +1,5 @@
 node_modules
-.next
+/.next/
 prisma
 
 
@@ -7,4 +7,5 @@ prisma
 
 .env
 .env.local
-env.development.local
+.env.development.local
+.DS_Store
