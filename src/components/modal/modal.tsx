@@ -5,9 +5,10 @@ import { createTask } from '@/app/lib/actions';
 
 interface NewTaskProps {
   setAddTask: Dispatch<SetStateAction<boolean>>;
+  currentUser: string;
 }
 
-export default function Modal({ setAddTask }: NewTaskProps) {
+export default function Modal({ setAddTask, currentUser }: NewTaskProps) {
   const closeModal = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -26,7 +27,7 @@ export default function Modal({ setAddTask }: NewTaskProps) {
   return (
     <form
       className=" border-[1px] w-full max-w-[500px] h-full max-h-[600px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-xl p-4 flex flex-col justify-between "
-      action={}
+      action={createTask(currentUser, formData)}
     >
       <div className="flex flex-col gap-2">
         <p className="font-bold">Task details</p>
@@ -167,7 +168,10 @@ export default function Modal({ setAddTask }: NewTaskProps) {
             alt="done"
           />
         </button>
-        <button className="bg-done-task text-xs flex gap-2 rounded-xl px-2 py-1 justify-center items-center">
+        <button
+          className="bg-done-task text-xs flex gap-2 rounded-xl px-2 py-1 justify-center items-center"
+          type="submit"
+        >
           <p>Add task</p>
           <Image
             src="/assets/images/Done_round.svg"

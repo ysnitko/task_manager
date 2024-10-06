@@ -31,10 +31,6 @@ export const createTask = async (user: string, formData: FormData) => {
   const taskName = formData.get('taskName') as string;
   const descriptionTask = formData.get('taskDescription') as string;
   // const iconPath = formData.get('password') as string;
-  const userData = {
-    name: taskName,
-    description: descriptionTask,
-  };
 
   const findUser = await prisma.user.findFirst({
     where: {
@@ -47,6 +43,8 @@ export const createTask = async (user: string, formData: FormData) => {
       connect: {
         name: findUser?.name,
       },
+      name: taskName,
+      description: descriptionTask,
     },
   };
 

@@ -57,7 +57,7 @@ export default function Page() {
       </div>
       {/* <Task /> */}
       <NewTask setAddTask={setAddTask} />
-      {addTask && <Modal setAddTask={setAddTask} />}
+      {addTask && <Modal setAddTask={setAddTask} currentUser={currentUser} />}
     </div>
   );
 }
