@@ -9,7 +9,7 @@ const config: Config = {
   theme: {
     extend: {
       backgroundImage: {
-        'remove-bg': "url('/assets/images/icon-remove-item.svg')",
+        'bg-btn': "url('/assets/images/icon-remove-item.svg')",
       },
       backgroundSize: {
         '60%': '60%',

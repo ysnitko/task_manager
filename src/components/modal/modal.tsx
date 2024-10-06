@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { ICONS } from '@/app/lib/store';
 import { Dispatch, SetStateAction } from 'react';
+import { createTask } from '@/app/lib/actions';
 
 interface NewTaskProps {
   setAddTask: Dispatch<SetStateAction<boolean>>;
@@ -14,17 +15,19 @@ export default function Modal({ setAddTask }: NewTaskProps) {
     setAddTask(false);
   };
 
-  const getIconPath = (event: React.MouseEvent) => {
+  const getIconPath = (event: React.MouseEvent<HTMLInputElement>) => {
     event.preventDefault();
     event.stopPropagation();
-    const findPath = ICONS.find((item) => item.id === +event.target);
-    console.log(event.target);
-
+    const targetElem = event.target as HTMLInputElement;
+    const findPath = ICONS.find((item) => item.id === +targetElem.id);
     return findPath?.srcImg;
   };
 
   return (
-    <form className=" border-[1px] w-full max-w-[500px] h-full max-h-[600px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-xl p-4 flex flex-col justify-between ">
+    <form
+      className=" border-[1px] w-full max-w-[500px] h-full max-h-[600px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-xl p-4 flex flex-col justify-between "
+      action={}
+    >
       <div className="flex flex-col gap-2">
         <p className="font-bold">Task details</p>
         <div className="flex flex-col gap-2">
@@ -61,19 +64,19 @@ export default function Modal({ setAddTask }: NewTaskProps) {
             <div className="flex gap-1">
               {ICONS.map((item) => {
                 return (
-                  <button
+                  <input
                     id={item.id.toString()}
+                    style={{
+                      backgroundImage: `url(${item.srcImg})`,
+                      backgroundPosition: 'center',
+                      backgroundRepeat: 'no-repeat',
+                      backgroundSize: '70%',
+                    }}
                     key={item.id}
-                    className="bg-task-to-do rounded-lg p-3"
+                    type="button"
+                    className="bg-task-to-do rounded-lg p-3 w-10 h-10"
                     onClick={getIconPath}
-                  >
-                    <Image
-                      src={item.srcImg}
-                      width={20}
-                      height={20}
-                      alt="icon"
-                    />
-                  </button>
+                  />
                 );
               })}
             </div>
