@@ -1,6 +1,7 @@
 'use server';
 import { Prisma, PrismaClient } from '@prisma/client';
 import { connect } from 'http2';
+import { title } from 'process';
 
 const prisma = new PrismaClient();
 
@@ -11,7 +12,6 @@ export const createUser = async ({ userName }: { userName: string }) => {
       name: userName,
     },
   });
-  console.log(nameUser.name);
 
   return nameUser.name;
 };
@@ -22,29 +22,31 @@ export const getUser = async (userName: string) => {
       name: userName,
     },
   });
-  return user?.name;
+  return user?.id;
 };
 
-export const createTask = async (user: string, formData: FormData) => {
+export const createTask = async (formData: FormData) => {
   // const userEnterName = (await formData.get('user')) as string | null;
 
   const taskName = formData.get('taskName') as string;
   const descriptionTask = formData.get('taskDescription') as string;
+  const currentUser = formData.get('currUser') as string;
   // const iconPath = formData.get('password') as string;
 
-  const findUser = await prisma.user.findFirst({
+  const findUser = await prisma.user.findUnique({
     where: {
-      name: user,
+      name: currentUser,
     },
   });
+  console.log(findUser);
 
   const connectTask = {
+    title: taskName,
+    content: descriptionTask,
+    src: '1',
+    status: 'dsds',
     User: {
-      connect: {
-        name: findUser?.name,
-      },
-      name: taskName,
-      description: descriptionTask,
+      connect: { id: findUser?.id },
     },
   };
 
