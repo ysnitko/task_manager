@@ -1,3 +1,4 @@
+'use client';
 import Image from 'next/image';
 import { ICONS } from '@/app/lib/store';
 import { Dispatch, SetStateAction } from 'react';
@@ -29,13 +30,7 @@ export default function Modal({ setAddTask, currentUser }: NewTaskProps) {
       className=" border-[1px] w-full max-w-[500px] h-full max-h-[600px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-xl p-4 flex flex-col justify-between "
       action={createTask}
     >
-      <input
-        type="text"
-        name="currUser"
-        id="currUser"
-        value={currentUser}
-        disabled
-      />
+      <input type="text" name="currUser" id="currUser" value={currentUser} />
       <div className="flex flex-col gap-2">
         <p className="font-bold">Task details</p>
         <div className="flex flex-col gap-2">
