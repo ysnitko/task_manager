@@ -17,6 +17,11 @@ export default function Modal({ setAddTask, currentUser }: NewTaskProps) {
     setAddTask(false);
   };
 
+  const closeMo = (event: React.FormEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    setAddTask(false);
+  };
+
   const getIconPath = (event: React.MouseEvent<HTMLInputElement>) => {
     event.preventDefault();
     event.stopPropagation();
@@ -170,18 +175,20 @@ export default function Modal({ setAddTask, currentUser }: NewTaskProps) {
             alt="done"
           />
         </button>
-        <button
-          className="bg-done-task text-xs flex gap-2 rounded-xl px-2 py-1 justify-center items-center"
+        <input
+          className="bg-done-task text-xs flex gap-2 rounded-xl px-2 py-1 justify-center items-center cursor-pointer"
           type="submit"
-        >
-          <p>Add task</p>
+          onSubmit={(event) => closeMo(event)}
+          value={'Add task'}
+        />
+        {/* <p>Add task</p>
           <Image
             src="/assets/images/Done_round.svg"
             width={10}
             height={10}
             alt="done"
           />
-        </button>
+        </button> */}
       </div>
     </form>
   );
