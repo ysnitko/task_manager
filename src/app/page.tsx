@@ -4,12 +4,13 @@ import Image from 'next/image';
 import Task from '@/components/task/task';
 import Modal from '@/components/modal/modal';
 import { useState, Dispatch, SetStateAction, useEffect } from 'react';
-import { createUser, getUser } from './lib/actions';
+import { createUser, getUsersTask } from './lib/actions';
 
 export default function Page() {
   const [addTask, setAddTask] = useState<boolean>(false);
   const [disableNameField, setDisableNameField] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState<string>('');
+  const [currTasks, setCurrTasks] = useState([getUsersTask]);
 
   const enterName = async (formData: FormData) => {
     try {
@@ -21,6 +22,7 @@ export default function Page() {
       console.error('Error creating user:', error);
     }
   };
+  console.log(currTasks);
 
   return (
     <div className="w-full">
@@ -55,7 +57,10 @@ export default function Page() {
           current user: <span>{currentUser}</span>
         </p>
       </div>
-      {/* <Task /> */}
+      {currTasks.map((el) => {
+        return <Task />;
+      })}
+
       <NewTask setAddTask={setAddTask} />
       {addTask && <Modal setAddTask={setAddTask} currentUser={currentUser} />}
     </div>

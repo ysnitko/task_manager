@@ -23,9 +23,13 @@ export const getUser = async (userName: string) => {
   return user?.id;
 };
 
-export const createTask = async (formData: FormData) => {
-  // const userEnterName = (await formData.get('user')) as string | null;
+export const getUsersTask = async (userName: string) => {
+  const user = await getUser(userName);
+  const userTasks = await prisma.task.findMany({ where: { userId: user } });
+  return userTasks;
+};
 
+export const createTask = async (formData: FormData) => {
   const taskName = formData.get('taskName') as string;
   const descriptionTask = formData.get('taskDescription') as string;
   const currentUser = formData.get('currUser') as string;

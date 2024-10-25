@@ -10,14 +10,18 @@ interface NewTaskProps {
 }
 
 export default function Modal({ setAddTask, currentUser }: NewTaskProps) {
+  const addTaskData = async (formData: FormData) => {
+    try {
+      await createTask(formData);
+      setAddTask(false);
+    } catch (error) {
+      console.error('Ошибка при создании задачи:', error);
+    }
+  };
+
   const closeModal = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    event.preventDefault();
-    setAddTask(false);
-  };
-
-  const closeMo = (event: React.FormEvent<HTMLInputElement>) => {
     event.preventDefault();
     setAddTask(false);
   };
@@ -33,7 +37,7 @@ export default function Modal({ setAddTask, currentUser }: NewTaskProps) {
   return (
     <form
       className=" border-[1px] w-full max-w-[500px] h-full max-h-[600px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-xl p-4 flex flex-col justify-between "
-      action={createTask}
+      action={addTaskData}
     >
       <input type="text" name="currUser" id="currUser" value={currentUser} />
       <div className="flex flex-col gap-2">
@@ -175,20 +179,24 @@ export default function Modal({ setAddTask, currentUser }: NewTaskProps) {
             alt="done"
           />
         </button>
-        <input
+        {/* <input
           className="bg-done-task text-xs flex gap-2 rounded-xl px-2 py-1 justify-center items-center cursor-pointer"
           type="submit"
           onSubmit={(event) => closeMo(event)}
           value={'Add task'}
-        />
-        {/* <p>Add task</p>
+        /> */}
+        <button
+          className="bg-done-task text-xs flex gap-2 rounded-xl px-2 py-1 justify-center items-center cursor-pointer"
+          type="submit"
+        >
+          <p>Add task</p>
           <Image
             src="/assets/images/Done_round.svg"
             width={10}
             height={10}
             alt="done"
           />
-        </button> */}
+        </button>
       </div>
     </form>
   );
