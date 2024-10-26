@@ -2,7 +2,12 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export default function Task() {
+interface TaskProps {
+  title: string;
+  content: string;
+}
+
+export default function Task({ title, content }: TaskProps) {
   return (
     <Link
       href="/"
@@ -15,12 +20,8 @@ export default function Task() {
         alt="add task"
       />
       <div>
-        <p className="w-full text-xl">Task To Do</p>
-        <p className="text-base">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis iste
-          labore saepe assumenda, quod natus animi ea porro beatae officia
-          quidem eos neque aspernatur
-        </p>
+        <p className="w-full text-xl">{title}</p>
+        <p className="text-base">{content}</p>
       </div>
       <Image
         src="/assets/images/Logo.svg"

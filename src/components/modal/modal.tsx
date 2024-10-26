@@ -39,7 +39,13 @@ export default function Modal({ setAddTask, currentUser }: NewTaskProps) {
       className=" border-[1px] w-full max-w-[500px] h-full max-h-[600px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-xl p-4 flex flex-col justify-between "
       action={addTaskData}
     >
-      <input type="text" name="currUser" id="currUser" value={currentUser} />
+      <input
+        type="text"
+        name="currUser"
+        id="currUser"
+        value={currentUser}
+        readOnly
+      />
       <div className="flex flex-col gap-2">
         <p className="font-bold">Task details</p>
         <div className="flex flex-col gap-2">
@@ -179,12 +185,6 @@ export default function Modal({ setAddTask, currentUser }: NewTaskProps) {
             alt="done"
           />
         </button>
-        {/* <input
-          className="bg-done-task text-xs flex gap-2 rounded-xl px-2 py-1 justify-center items-center cursor-pointer"
-          type="submit"
-          onSubmit={(event) => closeMo(event)}
-          value={'Add task'}
-        /> */}
         <button
           className="bg-done-task text-xs flex gap-2 rounded-xl px-2 py-1 justify-center items-center cursor-pointer"
           type="submit"

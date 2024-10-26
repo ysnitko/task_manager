@@ -10,7 +10,18 @@ export default function Page() {
   const [addTask, setAddTask] = useState<boolean>(false);
   const [disableNameField, setDisableNameField] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState<string>('');
-  const [currTasks, setCurrTasks] = useState([getUsersTask]);
+  const [userTasks, setUserTasks] = useState<any[]>([]);
+
+  useEffect(() => {
+    const loadUserTasks = async (userName: string) => {
+      if (userName) {
+        const tasks = await getUsersTask(userName);
+        console.log(tasks);
+        setUserTasks(tasks);
+      }
+    };
+    loadUserTasks(currentUser);
+  }, []);
 
   const enterName = async (formData: FormData) => {
     try {
@@ -22,7 +33,8 @@ export default function Page() {
       console.error('Error creating user:', error);
     }
   };
-  console.log(currTasks);
+
+  console.log(userTasks);
 
   return (
     <div className="w-full">
@@ -57,9 +69,15 @@ export default function Page() {
           current user: <span>{currentUser}</span>
         </p>
       </div>
-      {currTasks.map((el) => {
-        return <Task />;
-      })}
+      <ul>
+        {userTasks.map((el) => {
+          return (
+            <li key={el.id}>
+              <Task title={el.title} content={el.content} />
+            </li>
+          );
+        })}
+      </ul>
 
       <NewTask setAddTask={setAddTask} />
       {addTask && <Modal setAddTask={setAddTask} currentUser={currentUser} />}
