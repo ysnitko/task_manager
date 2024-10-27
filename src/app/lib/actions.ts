@@ -24,6 +24,11 @@ export const getUser = async (userName: string) => {
   return user?.id;
 };
 
+export const getAllUsers = async () => {
+  const user = await prisma.user.findMany();
+  return user;
+};
+
 export const getUsersTask = async (userName: string) => {
   const user = await getUser(userName);
   const userTasks = await prisma.task.findMany({ where: { userId: user } });

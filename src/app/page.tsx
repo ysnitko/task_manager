@@ -4,13 +4,14 @@ import Image from 'next/image';
 import Task from '@/components/task/task';
 import Modal from '@/components/modal/modal';
 import { useState, Dispatch, SetStateAction, useEffect } from 'react';
-import { createUser, getUsersTask } from './lib/actions';
+import { createUser, getUsersTask, getAllUsers } from './lib/actions';
 
 export default function Page() {
   const [addTask, setAddTask] = useState<boolean>(false);
   const [disableNameField, setDisableNameField] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState<string>('');
   const [userTasks, setUserTasks] = useState<any[]>([]);
+  const [users, setUsers] = useState<any[]>([]);
 
   useEffect(() => {
     const loadUserTasks = async (userName: string) => {
@@ -21,6 +22,14 @@ export default function Page() {
       }
     };
     loadUserTasks(currentUser);
+  }, []);
+
+  useEffect(() => {
+    const loadUsers = async () => {
+      const usersData = await getAllUsers();
+      setUsers(usersData);
+    };
+    loadUsers();
   }, []);
 
   const enterName = async (formData: FormData) => {
@@ -39,6 +48,17 @@ export default function Page() {
   return (
     <div className="w-full">
       <div className="flex justify-between">
+        <div className="flex">
+          <label htmlFor="selectUser">select user:</label>
+          <select name="selectUser" id="selectUser">
+            <option value=""></option>
+            {users.map((el) => (
+              <option key={el.id} value={el.name} defaultValue={currentUser}>
+                {el.name}
+              </option>
+            ))}
+          </select>
+        </div>
         <form action={enterName} className="flex  items-center gap-2">
           <label htmlFor="user">
             <p>enter name</p>
