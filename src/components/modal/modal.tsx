@@ -15,7 +15,7 @@ export default function Modal({ setAddTask, currentUser }: NewTaskProps) {
       await createTask(formData);
       setAddTask(false);
     } catch (error) {
-      console.error('Ошибка при создании задачи:', error);
+      console.error('Error:', error);
     }
   };
 
