@@ -1,29 +1,20 @@
 'use client';
 import Image from 'next/image';
 import { ICONS } from '@/app/lib/store';
-import { Dispatch, SetStateAction } from 'react';
 import { createTask } from '@/app/lib/actions';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
-interface NewTaskProps {
-  setAddTask: Dispatch<SetStateAction<boolean>>;
-  currentUser: string;
-}
-
-export default function Modal({ setAddTask, currentUser }: NewTaskProps) {
+export default function Modal() {
+  const [pathIcon, setPathIcon] = useState<string>('');
+  const router = useRouter();
   const addTaskData = async (formData: FormData) => {
     try {
       await createTask(formData);
-      setAddTask(false);
+      router.back();
     } catch (error) {
       console.error('Error:', error);
     }
-  };
-
-  const closeModal = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    event.preventDefault();
-    setAddTask(false);
   };
 
   const getIconPath = (event: React.MouseEvent<HTMLInputElement>) => {
@@ -31,7 +22,7 @@ export default function Modal({ setAddTask, currentUser }: NewTaskProps) {
     event.stopPropagation();
     const targetElem = event.target as HTMLInputElement;
     const findPath = ICONS.find((item) => item.id === +targetElem.id);
-    return findPath?.srcImg;
+    setPathIcon(findPath.srcImg);
   };
 
   return (
@@ -39,13 +30,6 @@ export default function Modal({ setAddTask, currentUser }: NewTaskProps) {
       className=" border-[1px] w-full max-w-[500px] h-full max-h-[600px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-xl p-4 flex flex-col justify-between "
       action={addTaskData}
     >
-      <input
-        type="text"
-        name="currUser"
-        id="currUser"
-        value={currentUser}
-        readOnly
-      />
       <div className="flex flex-col gap-2">
         <p className="font-bold">Task details</p>
         <div className="flex flex-col gap-2">
@@ -84,6 +68,7 @@ export default function Modal({ setAddTask, currentUser }: NewTaskProps) {
                 return (
                   <input
                     id={item.id.toString()}
+                    name="srcIcon"
                     style={{
                       backgroundImage: `url(${item.srcImg})`,
                       backgroundPosition: 'center',
@@ -175,7 +160,7 @@ export default function Modal({ setAddTask, currentUser }: NewTaskProps) {
       <div className="flex flex-row justify-end gap-2 text-white">
         <button
           className="bg-cancel-delete text-xs rounded-xl flex justify-center  items-center gap-2 px-2 py-1"
-          onClick={(event) => closeModal(event)}
+          onClick={() => router.back()}
         >
           <p>Close</p>
           <Image

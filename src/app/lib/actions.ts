@@ -4,57 +4,35 @@ import { revalidatePath } from 'next/cache';
 
 const prisma = new PrismaClient();
 
-export const createUser = async ({ userName }: { userName: string }) => {
-  // const userEnterName = (await formData.get('user')) as string | null;
-  const nameUser = await prisma.user.create({
-    data: {
-      name: userName,
-    },
-  });
-
-  return nameUser.name;
+export const getAllTasks = async () => {
+  const tasks: {
+    id: number | null;
+    src: string | null;
+    title: string | null;
+    content: string | null;
+    status: string | null;
+  }[] = await prisma.task.findMany();
+  return tasks;
 };
 
-export const getUser = async (userName: string) => {
-  const user = await prisma.user.findUnique({
-    where: {
-      name: userName,
-    },
-  });
-  return user?.id;
-};
-
-export const getAllUsers = async () => {
-  const user = await prisma.user.findMany();
-  return user;
-};
-
-export const getUsersTask = async (userName: string) => {
-  const user = await getUser(userName);
-  const userTasks = await prisma.task.findMany({ where: { userId: user } });
-  return userTasks;
+export const getIconSrc = async (src: string) => {
+  return src;
 };
 
 export const createTask = async (formData: FormData) => {
   const taskName = formData.get('taskName') as string;
   const descriptionTask = formData.get('taskDescription') as string;
-  const currentUser = formData.get('currUser') as string;
-  // const iconPath = formData.get('password') as string;
+  // const iconPath = formData.get('srcIcon') as string;
 
-  const userCur = await getUser(currentUser);
-  console.log(userCur);
-
-  const connectTask = {
+  const contextTask = {
     title: taskName,
     content: descriptionTask,
-    src: '1',
+    src: 'asds',
     status: 'dsds',
-    User: {
-      connect: { id: userCur },
-    },
   };
 
   await prisma.task.create({
-    data: connectTask as any,
+    data: contextTask,
   });
+  revalidatePath('/');
 };

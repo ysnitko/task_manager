@@ -3,8 +3,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 interface TaskProps {
-  title: string;
-  content: string;
+  title: string | null;
+  content: string | null;
 }
 
 export default function Task({ title, content }: TaskProps) {
