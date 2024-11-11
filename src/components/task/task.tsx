@@ -1,13 +1,15 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 
 interface TaskProps {
   title: string | null;
   content: string | null;
+  srcImg: string;
 }
 
-export default function Task({ title, content }: TaskProps) {
+export default function Task({ title, content, srcImg }: TaskProps) {
   return (
     <Link
       href="/"
@@ -23,12 +25,7 @@ export default function Task({ title, content }: TaskProps) {
         <p className="w-full text-xl">{title}</p>
         <p className="text-base">{content}</p>
       </div>
-      <Image
-        src="/assets/images/Logo.svg"
-        width={40}
-        height={40}
-        alt="add task"
-      />
+      <Image src={srcImg} width={40} height={40} alt="add task" />
     </Link>
   );
 }

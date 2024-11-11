@@ -10,7 +10,7 @@ export default function Modal() {
   const router = useRouter();
   const addTaskData = async (formData: FormData) => {
     try {
-      await createTask(formData);
+      await createTask(formData, pathIcon);
       router.back();
     } catch (error) {
       console.error('Error:', error);
@@ -21,7 +21,7 @@ export default function Modal() {
     event.preventDefault();
     event.stopPropagation();
     const targetElem = event.target as HTMLInputElement;
-    const findPath = ICONS.find((item) => item.id === +targetElem.id);
+    const findPath: any = ICONS.find((item) => item.id === +targetElem.id);
     setPathIcon(findPath.srcImg);
   };
 

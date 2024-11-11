@@ -19,7 +19,7 @@ export const getIconSrc = async (src: string) => {
   return src;
 };
 
-export const createTask = async (formData: FormData) => {
+export const createTask = async (formData: FormData, path: string) => {
   const taskName = formData.get('taskName') as string;
   const descriptionTask = formData.get('taskDescription') as string;
   // const iconPath = formData.get('srcIcon') as string;
@@ -27,7 +27,7 @@ export const createTask = async (formData: FormData) => {
   const contextTask = {
     title: taskName,
     content: descriptionTask,
-    src: 'asds',
+    src: path,
     status: 'dsds',
   };
 
