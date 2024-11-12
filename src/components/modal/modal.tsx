@@ -7,6 +7,7 @@ import { useState } from 'react';
 
 export default function Modal() {
   const [pathIcon, setPathIcon] = useState<string>('');
+
   const router = useRouter();
   const addTaskData = async (formData: FormData) => {
     try {
@@ -77,7 +78,7 @@ export default function Modal() {
                     }}
                     key={item.id}
                     type="button"
-                    className="bg-task-to-do rounded-lg p-3 w-10 h-10"
+                    className={`bg-task-to-do rounded-lg p-3 w-10 h-10 `}
                     onClick={getIconPath}
                   />
                 );

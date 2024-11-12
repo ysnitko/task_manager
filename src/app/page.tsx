@@ -18,7 +18,11 @@ export default async function Page({ searchParams }: SearchParamProps) {
         {tasks.map((el) => {
           return (
             <li key={el.id}>
-              <Task title={el.title} content={el.content} srcImg={el.src} />
+              <Task
+                title={el.title}
+                content={el.content}
+                srcImg={el.src || ''}
+              />
             </li>
           );
         })}
