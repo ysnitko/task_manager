@@ -1,5 +1,10 @@
 'use client';
 import Image from 'next/image';
+import Link from 'next/link';
+import Icon from '../icon/icon';
+import Completed from '../completed/completed';
+import WantToDO from '../wantToDo/wantToDO';
+import InProgress from '../inProgress/inProgress';
 import { ICONS } from '@/app/lib/store';
 import { createTask } from '@/app/lib/actions';
 import { useRouter } from 'next/navigation';
@@ -7,6 +12,8 @@ import { useState } from 'react';
 
 export default function Modal() {
   const [pathIcon, setPathIcon] = useState<string>('');
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [status, setStatus] = useState<string>('inProgress');
 
   const router = useRouter();
   const addTaskData = async (formData: FormData) => {
@@ -22,8 +29,16 @@ export default function Modal() {
     event.preventDefault();
     event.stopPropagation();
     const targetElem = event.target as HTMLInputElement;
-    const findPath: any = ICONS.find((item) => item.id === +targetElem.id);
-    setPathIcon(findPath.srcImg);
+    const findPath = ICONS.find((item) => item.id === +targetElem.id);
+    setPathIcon(findPath ? findPath.srcImg : '/assets/images/Logo.svg');
+    setSelectedId(findPath ? findPath.id : null);
+  };
+
+  const getStatus = (event: React.MouseEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    const targetElem = event.target as HTMLInputElement;
+    setStatus(targetElem.id);
+    console.log(status);
   };
 
   return (
@@ -65,24 +80,15 @@ export default function Modal() {
             <p className="text-cancel-delete text-sm">Icon</p>
 
             <div className="flex gap-1">
-              {ICONS.map((item) => {
-                return (
-                  <input
-                    id={item.id.toString()}
-                    name="srcIcon"
-                    style={{
-                      backgroundImage: `url(${item.srcImg})`,
-                      backgroundPosition: 'center',
-                      backgroundRepeat: 'no-repeat',
-                      backgroundSize: '70%',
-                    }}
-                    key={item.id}
-                    type="button"
-                    className={`bg-task-to-do rounded-lg p-3 w-10 h-10 `}
-                    onClick={getIconPath}
-                  />
-                );
-              })}
+              {ICONS.map((item) => (
+                <Icon
+                  key={item.id}
+                  srcImg={item.srcImg}
+                  idTask={+item.id}
+                  getIconPath={getIconPath}
+                  selectedId={selectedId}
+                />
+              ))}
             </div>
           </div>
           <div className=" w-full flex flex-col gap-2">
@@ -93,14 +99,7 @@ export default function Modal() {
                 className="flex justify-between border-[1px] border-task-to-do rounded-xl p-1 items-center"
               >
                 <div className="flex items-center gap-1 ">
-                  <div className="flex justify-center items-center rounded-xl bg-in-progress-label p-4">
-                    <Image
-                      src="/assets/images/Time_atack_duotone.svg"
-                      width={20}
-                      height={20}
-                      alt="completed"
-                    />
-                  </div>
+                  <InProgress />
                   <p>In Progress</p>
                 </div>
                 <input
@@ -115,14 +114,7 @@ export default function Modal() {
                 className="flex justify-between border-[1px] border-task-to-do rounded-xl p-1 items-center"
               >
                 <div className="flex items-center gap-1">
-                  <div className="flex justify-center items-center rounded-xl bg-done-label p-4">
-                    <Image
-                      src="/assets/images/Done_round_duotone.svg"
-                      width={20}
-                      height={20}
-                      alt="completed"
-                    />
-                  </div>
+                  <Completed />
                   <p>Completed</p>
                 </div>
                 <input
@@ -137,14 +129,7 @@ export default function Modal() {
                 className="flex  justify-between border-[1px] border-task-to-do rounded-xl p-1 items-center"
               >
                 <div className="flex items-center gap-1 ">
-                  <div className="flex justify-center items-center bg-wont-do-label rounded-xl p-4">
-                    <Image
-                      src="/assets/images/close_ring_duotone.svg"
-                      width={20}
-                      height={20}
-                      alt="wontToDo"
-                    />
-                  </div>
+                  <WantToDO />
                   <p>Won't do</p>
                 </div>
                 <input
@@ -159,9 +144,9 @@ export default function Modal() {
         </div>
       </div>
       <div className="flex flex-row justify-end gap-2 text-white">
-        <button
+        <Link
+          href={'/'}
           className="bg-cancel-delete text-xs rounded-xl flex justify-center  items-center gap-2 px-2 py-1"
-          onClick={() => router.back()}
         >
           <p>Close</p>
           <Image
@@ -170,7 +155,7 @@ export default function Modal() {
             height={10}
             alt="done"
           />
-        </button>
+        </Link>
         <button
           className="bg-done-task text-xs flex gap-2 rounded-xl px-2 py-1 justify-center items-center cursor-pointer"
           type="submit"

@@ -30,6 +30,7 @@ const config: Config = {
         'done-label': '#32D657',
         'wont-do-label': '#DD524C',
         'in-progress-label': '#E9A23B',
+        'border-icon': '#97A3B6',
       },
     },
   },

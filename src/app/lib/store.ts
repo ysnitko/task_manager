@@ -1,4 +1,9 @@
-export const ICONS = [
+type Icon = {
+  id: number;
+  srcImg: string;
+};
+
+export const ICONS: Icon[] = [
   { id: 1, srcImg: '/assets/images/books.svg' },
   { id: 2, srcImg: '/assets/images/clock.svg' },
   { id: 3, srcImg: '/assets/images/cup.svg' },
