@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Icon from '../icon/icon';
 import Completed from '../completed/completed';
-import WantToDO from '../wantToDo/wantToDO';
+import WantToDO from '../wantToDo/wantToDo';
 import InProgress from '../inProgress/inProgress';
 import { ICONS } from '@/app/lib/store';
 import { createTask } from '@/app/lib/actions';
@@ -18,7 +18,7 @@ export default function Modal() {
   const router = useRouter();
   const addTaskData = async (formData: FormData) => {
     try {
-      await createTask(formData, pathIcon);
+      await createTask(formData, pathIcon, status);
       router.back();
     } catch (error) {
       console.error('Error:', error);
@@ -34,13 +34,11 @@ export default function Modal() {
     setSelectedId(findPath ? findPath.id : null);
   };
 
-  const getStatus = (event: React.MouseEvent<HTMLInputElement>) => {
-    event.preventDefault();
+  const getStatus = (event: React.ChangeEvent<HTMLInputElement>) => {
     const targetElem = event.target as HTMLInputElement;
     setStatus(targetElem.id);
-    console.log(status);
   };
-
+  console.log(status);
   return (
     <form
       className=" border-[1px] w-full max-w-[500px] h-full max-h-[600px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-xl p-4 flex flex-col justify-between "
@@ -107,6 +105,8 @@ export default function Modal() {
                   name="status"
                   id="inProgress"
                   value="inProgress"
+                  checked={status === 'inProgress'}
+                  onChange={(event) => getStatus(event)}
                 />
               </label>
               <label
@@ -122,6 +122,8 @@ export default function Modal() {
                   name="status"
                   id="completed"
                   value="completed"
+                  checked={status === 'completed'}
+                  onChange={(event) => getStatus(event)}
                 />
               </label>
               <label
@@ -137,6 +139,8 @@ export default function Modal() {
                   name="status"
                   id="wontToDo"
                   value="wontToDo"
+                  checked={status === 'wontToDo'}
+                  onChange={(event) => getStatus(event)}
                 />
               </label>
             </div>

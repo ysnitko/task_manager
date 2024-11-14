@@ -19,7 +19,11 @@ export const getIconSrc = async (src: string) => {
   return src;
 };
 
-export const createTask = async (formData: FormData, path: string) => {
+export const createTask = async (
+  formData: FormData,
+  path: string,
+  status: string
+) => {
   const taskName = formData.get('taskName') as string;
   const descriptionTask = formData.get('taskDescription') as string;
   // const iconPath = formData.get('srcIcon') as string;
@@ -28,7 +32,7 @@ export const createTask = async (formData: FormData, path: string) => {
     title: taskName,
     content: descriptionTask,
     src: path,
-    status: 'dsds',
+    status: status,
   };
 
   await prisma.task.create({

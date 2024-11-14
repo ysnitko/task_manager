@@ -22,6 +22,7 @@ export default async function Page({ searchParams }: SearchParamProps) {
                 title={el.title}
                 content={el.content}
                 srcImg={el.src || ''}
+                status={el.status}
               />
             </li>
           );

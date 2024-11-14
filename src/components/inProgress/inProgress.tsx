@@ -8,7 +8,7 @@ export default function InProgress() {
         src="/assets/images/Time_atack_duotone.svg"
         width={20}
         height={20}
-        alt="completed"
+        alt="inProgress"
       />
     </div>
   );

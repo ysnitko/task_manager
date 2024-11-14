@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 
-export default function WantToDO() {
+export default function WantToDo() {
   return (
     <div className="flex justify-center items-center bg-wont-do-label rounded-xl p-4">
       <Image
