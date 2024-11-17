@@ -5,17 +5,24 @@ import InProgress from '../inProgress/inProgress';
 import Completed from '../completed/completed';
 import WantToDo from '../wantToDo/wantToDo';
 
-interface TaskProps {
+type TaskProps = {
+  id: number | null;
   title: string | null;
   content: string | null;
   srcImg?: string | null;
   status: string | null;
-}
+};
 
-export default function Task({ title, content, srcImg, status }: TaskProps) {
+export default function Task({
+  title,
+  content,
+  srcImg,
+  status,
+  id,
+}: TaskProps) {
   return (
     <Link
-      href="/"
+      href={`/?detail=true&id=${id}`}
       className="flex items-center gap-4 bg-add-bg w-full p-3 rounded-xl justify-between"
       style={{
         backgroundColor:

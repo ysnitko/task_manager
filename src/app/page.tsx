@@ -10,6 +10,7 @@ type SearchParamProps = {
 
 export default async function Page({ searchParams }: SearchParamProps) {
   const show = searchParams?.show;
+  const detail = searchParams?.detail;
   const tasks = await getAllTasks();
 
   return (
@@ -19,6 +20,7 @@ export default async function Page({ searchParams }: SearchParamProps) {
           return (
             <li key={el.id}>
               <Task
+                id={el.id}
                 title={el.title}
                 content={el.content}
                 srcImg={el.src || ''}
@@ -31,6 +33,7 @@ export default async function Page({ searchParams }: SearchParamProps) {
 
       <NewTask />
       {show && <Modal />}
+      {detail && <Modal />}
     </div>
   );
 }
