@@ -15,6 +15,23 @@ export const getAllTasks = async () => {
   return tasks;
 };
 
+export const getTask = async (id: number) => {
+  const task: any =
+    // {
+    //   id: number;
+    //   src: string;
+    //   title: string;
+    //   content: string;
+    //   status: string;
+    // }[]
+    await prisma.task.findFirst({
+      where: {
+        id: +id,
+      },
+    });
+  return task;
+};
+
 export const getIconSrc = async (src: string) => {
   return src;
 };

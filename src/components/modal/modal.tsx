@@ -9,13 +9,17 @@ import { ICONS } from '@/app/lib/store';
 import { createTask } from '@/app/lib/actions';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { getTask } from '@/app/lib/actions';
+import { useSearchParams } from 'next/navigation';
 
-export default function Modal() {
+export default function Modal({ detail }: { detail: string | undefined }) {
   const [pathIcon, setPathIcon] = useState<string>('');
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [status, setStatus] = useState<string>('inProgress');
-
+  const param = useSearchParams();
   const router = useRouter();
+  console.log(param);
+
   const addTaskData = async (formData: FormData) => {
     try {
       await createTask(formData, pathIcon, status);

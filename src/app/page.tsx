@@ -30,10 +30,8 @@ export default async function Page({ searchParams }: SearchParamProps) {
           );
         })}
       </ul>
-
       <NewTask />
-      {show && <Modal />}
-      {detail && <Modal />}
+      {(show || detail) && <Modal detail={detail} />}
     </div>
   );
 }
