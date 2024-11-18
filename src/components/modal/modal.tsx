@@ -8,7 +8,7 @@ import InProgress from '../inProgress/inProgress';
 import { ICONS } from '@/app/lib/store';
 import { createTask } from '@/app/lib/actions';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getTask } from '@/app/lib/actions';
 import { useSearchParams } from 'next/navigation';
 
@@ -16,9 +16,13 @@ export default function Modal({ detail }: { detail: string | undefined }) {
   const [pathIcon, setPathIcon] = useState<string>('');
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [status, setStatus] = useState<string>('inProgress');
-  const param = useSearchParams();
+  const [currName, setCurrName] = useState<string>('');
+  const param = useSearchParams().toString().split('=');
   const router = useRouter();
   console.log(param);
+
+  const taskId = +param[param.length - 1];
+  console.log(taskId);
 
   const addTaskData = async (formData: FormData) => {
     try {
@@ -28,6 +32,19 @@ export default function Modal({ detail }: { detail: string | undefined }) {
       console.error('Error:', error);
     }
   };
+
+  useEffect(() => {
+    const getCurrentNameTask = async (taskId: number) => {
+      try {
+        const currentNameTask = await getTask(taskId);
+        setCurrName(currentNameTask);
+      } catch (error) {
+        console.log('Error', error);
+      }
+    };
+    getCurrentNameTask(taskId);
+  }, []);
+  console.log(currName);
 
   const getIconPath = (event: React.MouseEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -42,7 +59,7 @@ export default function Modal({ detail }: { detail: string | undefined }) {
     const targetElem = event.target as HTMLInputElement;
     setStatus(targetElem.id);
   };
-  console.log(status);
+
   return (
     <form
       className=" border-[1px] w-full max-w-[500px] h-full max-h-[600px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-xl p-4 flex flex-col justify-between "
@@ -61,6 +78,7 @@ export default function Modal({ detail }: { detail: string | undefined }) {
               name="taskName"
               id="taskName"
               placeholder="task name"
+              defaultValue={detail ? currName : ''}
             />
           </div>
           <div className="w-full flex flex-col gap-2">
