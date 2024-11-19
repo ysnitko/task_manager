@@ -5,13 +5,17 @@ export default function Icon({
   idTask,
   getIconPath,
   selectedId,
+  detail,
+  pathIcon,
 }: {
   srcImg: string;
   idTask: number;
   selectedId: number | null;
   getIconPath: React.MouseEventHandler<HTMLInputElement>;
+  detail: string | undefined;
+  pathIcon: string;
 }) {
-  const isSelected = selectedId === idTask;
+  const isSelected = selectedId === idTask || pathIcon === srcImg;
   return (
     <input
       name="srcIcon"

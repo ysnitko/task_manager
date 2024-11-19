@@ -1,4 +1,5 @@
 'use server';
+
 import { Prisma, PrismaClient } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 
@@ -43,7 +44,6 @@ export const createTask = async (
 ) => {
   const taskName = formData.get('taskName') as string;
   const descriptionTask = formData.get('taskDescription') as string;
-  // const iconPath = formData.get('srcIcon') as string;
 
   const contextTask = {
     title: taskName,
@@ -54,6 +54,15 @@ export const createTask = async (
 
   await prisma.task.create({
     data: contextTask,
+  });
+  revalidatePath('/');
+};
+
+export const deleteTask = async (taskId: number) => {
+  await prisma.task.delete({
+    where: {
+      id: taskId,
+    },
   });
   revalidatePath('/');
 };

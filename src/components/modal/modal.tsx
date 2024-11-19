@@ -6,10 +6,9 @@ import Completed from '../completed/completed';
 import WantToDO from '../wantToDo/wantToDo';
 import InProgress from '../inProgress/inProgress';
 import { ICONS } from '@/app/lib/store';
-import { createTask } from '@/app/lib/actions';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { getTask } from '@/app/lib/actions';
+import { getTask, deleteTask, createTask } from '@/app/lib/actions';
 import { useSearchParams } from 'next/navigation';
 
 export default function Modal({ detail }: { detail: string | undefined }) {
@@ -17,12 +16,25 @@ export default function Modal({ detail }: { detail: string | undefined }) {
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [status, setStatus] = useState<string>('inProgress');
   const [currName, setCurrName] = useState<string>('');
+  const [currContent, setCurrContent] = useState<string>('');
   const param = useSearchParams().toString().split('=');
   const router = useRouter();
-  console.log(param);
-
-  const taskId = +param[param.length - 1];
-  console.log(taskId);
+  const taskId = param[param.length - 1];
+  useEffect(() => {
+    const getCurrentNameTask = async (taskId: number) => {
+      try {
+        const currentNameTask = await getTask(taskId);
+        setCurrName(currentNameTask.title);
+        setCurrContent(currentNameTask.content);
+        setStatus(currentNameTask.status);
+        setPathIcon(currentNameTask.src);
+      } catch (error) {
+        console.log('Error', error);
+      }
+    };
+    getCurrentNameTask(+taskId);
+  }, []);
+  console.log(currName);
 
   const addTaskData = async (formData: FormData) => {
     try {
@@ -33,18 +45,14 @@ export default function Modal({ detail }: { detail: string | undefined }) {
     }
   };
 
-  useEffect(() => {
-    const getCurrentNameTask = async (taskId: number) => {
-      try {
-        const currentNameTask = await getTask(taskId);
-        setCurrName(currentNameTask);
-      } catch (error) {
-        console.log('Error', error);
-      }
-    };
-    getCurrentNameTask(taskId);
-  }, []);
-  console.log(currName);
+  const deleteCurrentTask = async (id: number) => {
+    try {
+      await deleteTask(id);
+      router.push('/');
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
   const getIconPath = (event: React.MouseEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -94,6 +102,7 @@ export default function Modal({ detail }: { detail: string | undefined }) {
               id="taskDescription"
               rows={5}
               placeholder="Enter a short description"
+              defaultValue={detail ? currContent : ''}
             ></textarea>
           </div>
           <div className=" w-full flex flex-col gap-2">
@@ -107,6 +116,8 @@ export default function Modal({ detail }: { detail: string | undefined }) {
                   idTask={+item.id}
                   getIconPath={getIconPath}
                   selectedId={selectedId}
+                  detail={detail}
+                  pathIcon={pathIcon}
                 />
               ))}
             </div>
@@ -170,30 +181,60 @@ export default function Modal({ detail }: { detail: string | undefined }) {
         </div>
       </div>
       <div className="flex flex-row justify-end gap-2 text-white">
-        <Link
-          href={'/'}
-          className="bg-cancel-delete text-xs rounded-xl flex justify-center  items-center gap-2 px-2 py-1"
-        >
-          <p>Close</p>
-          <Image
-            src="/assets/images/close_ring_duotone.svg"
-            width={10}
-            height={10}
-            alt="done"
-          />
-        </Link>
-        <button
-          className="bg-done-task text-xs flex gap-2 rounded-xl px-2 py-1 justify-center items-center cursor-pointer"
-          type="submit"
-        >
-          <p>Add task</p>
-          <Image
-            src="/assets/images/Done_round.svg"
-            width={10}
-            height={10}
-            alt="done"
-          />
-        </button>
+        {detail ? (
+          <button
+            className="bg-cancel-delete text-xs rounded-xl flex justify-center  items-center gap-2 px-2 py-1"
+            onClick={() => deleteCurrentTask(+taskId)}
+          >
+            <p>Detele</p>
+            <Image
+              src="/assets/images/Trash.svg"
+              width={10}
+              height={10}
+              alt="done"
+            />
+          </button>
+        ) : (
+          <Link
+            href={'/'}
+            className="bg-cancel-delete text-xs rounded-xl flex justify-center  items-center gap-2 px-2 py-1"
+          >
+            <p>Close</p>
+            <Image
+              src="/assets/images/close_ring_duotone.svg"
+              width={10}
+              height={10}
+              alt="done"
+            />
+          </Link>
+        )}
+        {detail ? (
+          <button
+            className="bg-done-task text-xs flex gap-2 rounded-xl px-2 py-1 justify-center items-center cursor-pointer"
+            type="submit"
+          >
+            <p>Save</p>
+            <Image
+              src="/assets/images/Done_round.svg"
+              width={10}
+              height={10}
+              alt="done"
+            />
+          </button>
+        ) : (
+          <button
+            className="bg-done-task text-xs flex gap-2 rounded-xl px-2 py-1 justify-center items-center cursor-pointer"
+            type="submit"
+          >
+            <p>Add task</p>
+            <Image
+              src="/assets/images/Done_round.svg"
+              width={10}
+              height={10}
+              alt="done"
+            />
+          </button>
+        )}
       </div>
     </form>
   );
