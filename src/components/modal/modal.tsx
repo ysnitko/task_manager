@@ -7,8 +7,8 @@ import WantToDO from '../wantToDo/wantToDo';
 import InProgress from '../inProgress/inProgress';
 import { ICONS } from '@/app/lib/store';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { getTask, deleteTask, createTask } from '@/app/lib/actions';
+import React, { useEffect, useState } from 'react';
+import { getTask, deleteTask, createTask, updateTask } from '@/app/lib/actions';
 import { useSearchParams } from 'next/navigation';
 
 export default function Modal({ detail }: { detail: string | undefined }) {
@@ -45,9 +45,19 @@ export default function Modal({ detail }: { detail: string | undefined }) {
     }
   };
 
-  const deleteCurrentTask = async (id: number) => {
+  const deleteCurrentTask = async (event: React.MouseEvent, id: number) => {
+    event.preventDefault();
     try {
       await deleteTask(id);
+      router.push('/');
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  const updateCurrentTask = async (formData: FormData) => {
+    try {
+      await updateTask(pathIcon, status, +taskId, formData);
       router.push('/');
     } catch (error) {
       console.error('Error:', error);
@@ -71,7 +81,7 @@ export default function Modal({ detail }: { detail: string | undefined }) {
   return (
     <form
       className=" border-[1px] w-full max-w-[500px] h-full max-h-[600px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-xl p-4 flex flex-col justify-between "
-      action={addTaskData}
+      action={detail ? updateCurrentTask : addTaskData}
     >
       <div className="flex flex-col gap-2">
         <p className="font-bold">Task details</p>
@@ -184,7 +194,7 @@ export default function Modal({ detail }: { detail: string | undefined }) {
         {detail ? (
           <button
             className="bg-cancel-delete text-xs rounded-xl flex justify-center  items-center gap-2 px-2 py-1"
-            onClick={() => deleteCurrentTask(+taskId)}
+            onClick={(event) => deleteCurrentTask(event, +taskId)}
           >
             <p>Detele</p>
             <Image

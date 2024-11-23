@@ -1,6 +1,6 @@
 'use server';
 
-import { Prisma, PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 
 const prisma = new PrismaClient();
@@ -17,19 +17,11 @@ export const getAllTasks = async () => {
 };
 
 export const getTask = async (id: number) => {
-  const task: any =
-    // {
-    //   id: number;
-    //   src: string;
-    //   title: string;
-    //   content: string;
-    //   status: string;
-    // }[]
-    await prisma.task.findFirst({
-      where: {
-        id: +id,
-      },
-    });
+  const task: any = await prisma.task.findFirst({
+    where: {
+      id: +id,
+    },
+  });
   return task;
 };
 
@@ -44,14 +36,12 @@ export const createTask = async (
 ) => {
   const taskName = formData.get('taskName') as string;
   const descriptionTask = formData.get('taskDescription') as string;
-
   const contextTask = {
     title: taskName,
     content: descriptionTask,
     src: path,
     status: status,
   };
-
   await prisma.task.create({
     data: contextTask,
   });
@@ -63,6 +53,30 @@ export const deleteTask = async (taskId: number) => {
     where: {
       id: taskId,
     },
+  });
+  revalidatePath('/');
+};
+
+export const updateTask = async (
+  path: string,
+  status: string,
+  id: number,
+  formData: FormData
+) => {
+  const taskName = formData.get('taskName') as string;
+  const descriptionTask = formData.get('taskDescription') as string;
+  const contextTask = {
+    title: taskName,
+    content: descriptionTask,
+    src: path,
+    status: status,
+  };
+
+  await prisma.task.update({
+    where: {
+      id: id,
+    },
+    data: contextTask,
   });
   revalidatePath('/');
 };
