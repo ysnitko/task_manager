@@ -10,6 +10,8 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { getTask, deleteTask, createTask, updateTask } from '@/app/lib/actions';
 import { useSearchParams } from 'next/navigation';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Modal({ detail }: { detail: string | undefined }) {
   const [pathIcon, setPathIcon] = useState<string>('');
@@ -19,24 +21,34 @@ export default function Modal({ detail }: { detail: string | undefined }) {
   const [currContent, setCurrContent] = useState<string>('');
   const param = useSearchParams().toString().split('=');
   const router = useRouter();
+  const notify = () => toast('Error');
   const taskId = param[param.length - 1];
   useEffect(() => {
     const getCurrentNameTask = async (taskId: number) => {
       try {
         const currentNameTask = await getTask(taskId);
-        setCurrName(currentNameTask.title);
-        setCurrContent(currentNameTask.content);
-        setStatus(currentNameTask.status);
-        setPathIcon(currentNameTask.src);
+        if (currentNameTask) {
+          setCurrName(currentNameTask.title || '');
+          setCurrContent(currentNameTask.content || '');
+          setStatus(currentNameTask.status || '');
+          setPathIcon(currentNameTask.src || '');
+        } else {
+          setCurrName('');
+          setCurrContent('');
+          setStatus('');
+          setPathIcon('');
+        }
       } catch (error) {
         console.log('Error', error);
       }
     };
     getCurrentNameTask(+taskId);
   }, []);
-  console.log(currName);
 
   const addTaskData = async (formData: FormData) => {
+    if (pathIcon === '' || status === '') {
+      notify();
+    }
     try {
       await createTask(formData, pathIcon, status);
       router.back();
@@ -246,6 +258,7 @@ export default function Modal({ detail }: { detail: string | undefined }) {
           </button>
         )}
       </div>
+      <ToastContainer />
     </form>
   );
 }

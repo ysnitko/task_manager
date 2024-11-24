@@ -5,19 +5,21 @@ import { revalidatePath } from 'next/cache';
 
 const prisma = new PrismaClient();
 
+type TaskType = {
+  id: number | null;
+  src: string | null;
+  title: string | null;
+  content: string | null;
+  status: string | null;
+};
+
 export const getAllTasks = async () => {
-  const tasks: {
-    id: number | null;
-    src: string | null;
-    title: string | null;
-    content: string | null;
-    status: string | null;
-  }[] = await prisma.task.findMany();
+  const tasks: TaskType[] = await prisma.task.findMany();
   return tasks;
 };
 
 export const getTask = async (id: number) => {
-  const task: any = await prisma.task.findFirst({
+  const task = await prisma.task.findFirst({
     where: {
       id: +id,
     },
@@ -42,6 +44,7 @@ export const createTask = async (
     src: path,
     status: status,
   };
+
   await prisma.task.create({
     data: contextTask,
   });
