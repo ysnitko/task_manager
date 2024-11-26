@@ -14,7 +14,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function Modal({ detail }: { detail: string | undefined }) {
-  const [pathIcon, setPathIcon] = useState<string>('');
+  const [pathIcon, setPathIcon] = useState<string>('/assets/images/books.svg');
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [status, setStatus] = useState<string>('inProgress');
   const [currName, setCurrName] = useState<string>('');
@@ -109,6 +109,7 @@ export default function Modal({ detail }: { detail: string | undefined }) {
               id="taskName"
               placeholder="task name"
               defaultValue={detail ? currName : ''}
+              required
             />
           </div>
           <div className="w-full flex flex-col gap-2">
@@ -125,11 +126,11 @@ export default function Modal({ detail }: { detail: string | undefined }) {
               rows={5}
               placeholder="Enter a short description"
               defaultValue={detail ? currContent : ''}
+              required
             ></textarea>
           </div>
           <div className=" w-full flex flex-col gap-2">
             <p className="text-cancel-delete text-sm">Icon</p>
-
             <div className="flex gap-1">
               {ICONS.map((item) => (
                 <Icon
