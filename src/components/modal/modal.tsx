@@ -10,7 +10,8 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { getTask, deleteTask, createTask, updateTask } from '@/app/lib/actions';
 import { useSearchParams } from 'next/navigation';
-import { toast } from 'react-toastify';
+import { Bounce, toast } from 'react-toastify';
+import { showToast } from '@/app/lib/showToast';
 
 export default function Modal({ detail }: { detail: string | undefined }) {
   const [pathIcon, setPathIcon] = useState<string>('/assets/images/books.svg');
@@ -20,17 +21,6 @@ export default function Modal({ detail }: { detail: string | undefined }) {
   const [currContent, setCurrContent] = useState<string>('');
   const param = useSearchParams().toString().split('=');
   const router = useRouter();
-  const notify = () =>
-    toast('🦄 Wow so easy!', {
-      position: 'top-right',
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'light',
-    });
   const taskId = param[param.length - 1];
   useEffect(() => {
     const getCurrentNameTask = async (taskId: number) => {
@@ -57,8 +47,8 @@ export default function Modal({ detail }: { detail: string | undefined }) {
   const addTaskData = async (formData: FormData) => {
     try {
       await createTask(formData, pathIcon, status);
-      toast.success('added');
       router.back();
+      showToast('success', <p>Task created</p>);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -69,6 +59,7 @@ export default function Modal({ detail }: { detail: string | undefined }) {
     try {
       await deleteTask(id);
       router.push('/');
+      showToast('warning', <p>Task deleted</p>);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -78,6 +69,7 @@ export default function Modal({ detail }: { detail: string | undefined }) {
     try {
       await updateTask(pathIcon, status, +taskId, formData);
       router.push('/');
+      showToast('info', <p>Task updated</p>);
     } catch (error) {
       console.error('Error:', error);
     }

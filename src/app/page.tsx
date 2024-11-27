@@ -3,7 +3,6 @@ import Task from '@/components/task/task';
 import Modal from '@/components/modal/modal';
 import React from 'react';
 import { getAllTasks } from './lib/actions';
-import { ToastContainer } from 'react-toastify';
 
 type SearchParamProps = {
   searchParams: Record<string, string> | null | undefined;
@@ -33,18 +32,6 @@ export default async function Page({ searchParams }: SearchParamProps) {
       </ul>
       <NewTask />
       {(show || detail) && <Modal detail={detail} />}
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
     </div>
   );
 }
