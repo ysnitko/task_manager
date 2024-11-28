@@ -1,13 +1,13 @@
 # Task manager app
 
-![ScreenShot](https://github.com/ysnitko/task_manager/blob/main/11/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA1.JPG)
+![ScreenShot](https://github.com/ysnitko/task_manager/blob/main/11/Screenshot%202024-11-28%20at%2022.09.06.png)
 
 ## Table of contents
 
 - [Overview](#overview)
   - [Live link and source code](#live-link-and-source-code)
   - [Built with](#built-with)
-  - [Features](#features)
+  - [Screenshots](#Screenshots)
 
 ## Overview
 
@@ -23,6 +23,8 @@
 - [React-toastify](https://www.npmjs.com/package/react-toastify)
 - [TailwindCSS](https://tailwindcss.com/)
 
-### Features
+### Screenshots
 
-![ScreenShot](https://github.com/ysnitko/dashboard/blob/main/public/assets/sign-in.png)
+![ScreenShot](https://github.com/ysnitko/task_manager/blob/main/11/Screenshot%202024-11-28%20at%2022.03.52.png)
+![ScreenShot](https://github.com/ysnitko/task_manager/blob/main/11/Screenshot%202024-11-28%20at%2022.03.00.png)
+![ScreenShot](https://github.com/ysnitko/task_manager/blob/main/11/Screenshot%202024-11-28%20at%2022.04.11.png)
