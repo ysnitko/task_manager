@@ -4,8 +4,8 @@ import Link from 'next/link';
 
 export default function Header() {
   return (
-    <div className="flex flex-col w-full   ">
-      <div className="flex gap-3  items-center  ">
+    <div className="flex flex-col w-full">
+      <div className="flex gap-3  items-center">
         <Image
           src="/assets/images/Logo.svg"
           className="mt-3"
@@ -25,7 +25,7 @@ export default function Header() {
           alt="edit"
         />
       </div>
-      <p className="text-base ml-14">Tasks to keep organised</p>
+      <p className="text-base ml-14">Tasks to keep organized</p>
     </div>
   );
 }

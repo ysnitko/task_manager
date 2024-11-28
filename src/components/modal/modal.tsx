@@ -10,7 +10,6 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { getTask, deleteTask, createTask, updateTask } from '@/app/lib/actions';
 import { useSearchParams } from 'next/navigation';
-import { Bounce, toast } from 'react-toastify';
 import { showToast } from '@/app/lib/showToast';
 
 export default function Modal({ detail }: { detail: string | undefined }) {
